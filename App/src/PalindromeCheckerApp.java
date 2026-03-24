@@ -1,30 +1,55 @@
-public class NormalizedPalindrome {
-    public static void main(String[] args) {
-        String input = "No 'x' in Nixon";
+/**
+ * A utility class designed for Palindrome validation.
+ * Demonstrates Encapsulation and Single Responsibility.
+ */
+class PalindromeChecker {
 
-        if (isPalindrome(input)) {
-            System.out.println("It's a normalized palindrome!");
-        } else {
-            System.out.println("It's not a palindrome.");
-        }
+    // Internal Data Structure Preference (could be changed without affecting the user)
+    private String cleanString;
+
+    /**
+     * Public method to expose functionality.
+     * @param input The raw string to check.
+     * @return true if palindrome, false otherwise.
+     */
+    public boolean isValid(String input) {
+        if (input == null) return false;
+
+        this.cleanString = preprocess(input);
+        return performCheck();
     }
 
-    public static boolean isPalindrome(String str) {
-        // 1. Normalize: Remove anything that isn't a letter or number
-        // [^a-zA-Z0-9] means "match anything NOT in these ranges"
-        String clean = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    // Private helper method (Encapsulation: User doesn't need to see this)
+    private String preprocess(String input) {
+        return input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    }
 
-        // 2. Apply logic (Two-Pointer used here for efficiency)
+    // The actual algorithm (currently using Two-Pointer for efficiency)
+    private boolean performCheck() {
         int left = 0;
-        int right = clean.length() - 1;
+        int right = cleanString.length() - 1;
 
         while (left < right) {
-            if (clean.charAt(left) != clean.charAt(right)) {
+            if (cleanString.charAt(left) != cleanString.charAt(right)) {
                 return false;
             }
             left++;
             right--;
         }
         return true;
+    }
+}
+
+// Driver Class
+public class Main {
+    public static void main(String[] args) {
+        // Create an instance of the checker
+        PalindromeChecker checker = new PalindromeChecker();
+
+        String test = "Was it a car or a cat I saw?";
+
+        if (checker.isValid(test)) {
+            System.out.println("The phrase is a valid palindrome.");
+        }
     }
 }
