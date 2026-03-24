@@ -37,3 +37,12 @@ public class PalindromeCheckerApp {
         sc.close();
     }
 }
+public static String reverseString(String str) {
+    if (str == null) return null;
+    return new StringBuilder(str).reverse().toString();
+}
+
+void main() {
+}
+
+
