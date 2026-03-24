@@ -1,6 +1,8 @@
 import java.util.Stack;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 
 // 1. STRATEGY INTERFACE
 interface PalindromeStrategy {
@@ -14,7 +16,6 @@ class CharArrayStrategy implements PalindromeStrategy {
         String clean = input.toLowerCase().replaceAll("[^a-z0-9]", "");
         char[] array = clean.toCharArray();
         int start = 0, end = array.length - 1;
-
         while (start < end) {
             if (array[start++] != array[end--]) return false;
         }
@@ -28,11 +29,7 @@ class StackStrategy implements PalindromeStrategy {
     public boolean check(String input) {
         String clean = input.toLowerCase().replaceAll("[^a-z0-9]", "");
         Stack<Character> stack = new Stack<>();
-
-        for (char c : clean.toCharArray()) {
-            stack.push(c);
-        }
-
+        for (char c : clean.toCharArray()) stack.push(c);
         for (char c : clean.toCharArray()) {
             if (c != stack.pop()) return false;
         }
@@ -46,11 +43,7 @@ class DequeStrategy implements PalindromeStrategy {
     public boolean check(String input) {
         String clean = input.toLowerCase().replaceAll("[^a-z0-9]", "");
         Deque<Character> deque = new ArrayDeque<>();
-
-        for (char c : clean.toCharArray()) {
-            deque.addLast(c);
-        }
-
+        for (char c : clean.toCharArray()) deque.addLast(c);
         while (deque.size() > 1) {
             if (deque.removeFirst() != deque.removeLast()) return false;
         }
@@ -58,42 +51,19 @@ class DequeStrategy implements PalindromeStrategy {
     }
 }
 
-// 5. THE CONTEXT CLASS (Validator)
-class PalindromeValidator {
-    private PalindromeStrategy strategy;
+// 5. PERFORMANCE BENCHMARK CLASS
+class PerformanceTester {
+    public void runBenchmark(String text, List<PalindromeStrategy> strategies) {
+        System.out.println("--- Palindrome Performance Results (Nanoseconds) ---");
+        System.out.printf("%-20s | %-15s | %-10s%n", "Strategy", "Execution Time", "Result");
+        System.out.println("---------------------------------------------------------");
 
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
+        for (PalindromeStrategy strategy : strategies) {
+            // Start Timer
+            long startTime = System.nanoTime();
 
-    public void validate(String text) {
-        if (strategy == null) {
-            System.out.println("Error: Strategy not set.");
-            return;
-        }
-        boolean result = strategy.check(text);
-        System.out.println("[" + strategy.getClass().getSimpleName() + "] Result: " + result);
-    }
-}
+            boolean result = strategy.check(text);
 
-// 6. MAIN DRIVER
-public class PalindromeSystem {
-    public static void main(String[] args) {
-        PalindromeValidator validator = new PalindromeValidator();
-        String testPhrase = "A man, a plan, a canal: Panama";
-
-        System.out.println("Testing phrase: " + testPhrase + "\n");
-
-        // Test Algorithm 1: Array
-        validator.setStrategy(new CharArrayStrategy());
-        validator.validate(testPhrase);
-
-        // Test Algorithm 2: Stack
-        validator.setStrategy(new StackStrategy());
-        validator.validate(testPhrase);
-
-        // Test Algorithm 3: Deque
-        validator.setStrategy(new DequeStrategy());
-        validator.validate(testPhrase);
-    }
-}
+            // End Timer
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
