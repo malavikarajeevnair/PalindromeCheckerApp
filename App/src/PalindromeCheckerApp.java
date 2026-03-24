@@ -1,48 +1,33 @@
-import java.util.Scanner;
-import java.util.Stack;
-
-public class PalindromeCheckerApp {
-
+public class CharArrayPalindrome {
     public static void main(String[] args) {
+        String input = "Racecar";
 
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("===== UC5: Stack-Based Palindrome Checker =====");
-        System.out.print("Enter a string: ");
-        String input = sc.nextLine();
-
-        // Convert to lowercase for case-insensitive comparison
-        String processed = input.toLowerCase();
-
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters into stack
-        for (int i = 0; i < processed.length(); i++) {
-            stack.push(processed.charAt(i));
-        }
-
-        // Pop characters and build reversed string
-        String reversed = "";
-        while (!stack.isEmpty()) {
-            reversed += stack.pop();
-        }
-
-        // Check palindrome
-        if (processed.equals(reversed)) {
-            System.out.println("Result: The given string is a PALINDROME");
+        if (isPalindrome(input)) {
+            System.out.println(input + " is a palindrome.");
         } else {
-            System.out.println("Result: The given string is NOT a palindrome");
+            System.out.println(input + " is NOT a palindrome.");
+        }
+    }
+
+    public static boolean isPalindrome(String str) {
+        // 1. Convert to char array (Standardize to lowercase first)
+        char[] charArray = str.toLowerCase().toCharArray();
+
+        // 2. Initialize two pointers
+        int start = 0;
+        int end = charArray.length - 1;
+
+        // 3. Compare start & end characters
+        while (start < end) {
+            if (charArray[start] != charArray[end]) {
+                return false; // Mismatch found, not a palindrome
+            }
+            start++; // Move forward
+            end--;   // Move backward
         }
 
-        sc.close();
+        return true; // All characters matched
     }
-}
-public static String reverseString(String str) {
-    if (str == null) return null;
-    return new StringBuilder(str).reverse().toString();
-}
-
-void main() {
 }
 
 
