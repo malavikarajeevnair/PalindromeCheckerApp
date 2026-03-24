@@ -1,32 +1,35 @@
-public class CharArrayPalindrome {
+import java.util.Stack;
+
+public class StackPalindrome {
     public static void main(String[] args) {
-        String input = "Racecar";
+        String input = "madam";
 
         if (isPalindrome(input)) {
-            System.out.println(input + " is a palindrome.");
+            System.out.println("\"" + input + "\" is a palindrome.");
         } else {
-            System.out.println(input + " is NOT a palindrome.");
+            System.out.println("\"" + input + "\" is NOT a palindrome.");
         }
     }
 
     public static boolean isPalindrome(String str) {
-        // 1. Convert to char array (Standardize to lowercase first)
-        char[] charArray = str.toLowerCase().toCharArray();
+        // Clean the string to handle case sensitivity
+        String cleanStr = str.toLowerCase();
+        Stack<Character> stack = new Stack<>();
 
-        // 2. Initialize two pointers
-        int start = 0;
-        int end = charArray.length - 1;
-
-        // 3. Compare start & end characters
-        while (start < end) {
-            if (charArray[start] != charArray[end]) {
-                return false; // Mismatch found, not a palindrome
-            }
-            start++; // Move forward
-            end--;   // Move backward
+        // 1. Push: Add all characters to the stack
+        for (int i = 0; i < cleanStr.length(); i++) {
+            stack.push(cleanStr.charAt(i));
         }
 
-        return true; // All characters matched
+        // 2. Pop and Compare: Compare original string with popped characters
+        for (int i = 0; i < cleanStr.length(); i++) {
+            char poppedChar = stack.pop();
+            if (cleanStr.charAt(i) != poppedChar) {
+                return false; // Mismatch found
+            }
+        }
+
+        return true; // If we reach here, it's a palindrome
     }
 }
 
